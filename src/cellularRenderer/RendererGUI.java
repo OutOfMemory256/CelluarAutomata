@@ -7,8 +7,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class RendererGUI extends JFrame {
-    private JPanel mainPanel = new JPanel();
     private JPanel[][] matrixGUI;
+    private JPanel matrixContainer;
+
+    private static boolean isRightButtonPressed = false;
 
     private GameOfLife gameOfLife;
 
@@ -18,7 +20,7 @@ public class RendererGUI extends JFrame {
 
     public RendererGUI(GameOfLife gameOfLife) {
         this.gameOfLife = gameOfLife;
-        //setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(800, 600));
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -28,11 +30,11 @@ public class RendererGUI extends JFrame {
     }
 
     public void init(int width, int height) {
-        mainPanel.setLayout(new GridLayout(width, height));
+        matrixContainer = new JPanel(new GridLayout(width, height));
 
         matrixGUI = new JPanel[width][height];
 
-        add(mainPanel, BorderLayout.CENTER);
+        add(matrixContainer, BorderLayout.CENTER);
 
         stopButton.setPreferredSize(new Dimension(100, 15));
 
@@ -59,31 +61,70 @@ public class RendererGUI extends JFrame {
 
         add(southPanel, BorderLayout.SOUTH);
 
-        for(int x = 0; x < matrixGUI.length; x++) {
-            for(int y = 0; y < matrixGUI[0].length; y++) {
-                JPanel panel = new JPanel();
-                panel.setPreferredSize(new Dimension(2, 2));
-                panel.setBackground(Color.BLACK);
-
-                Integer panelX = x, panelY = y;
-                panel.addMouseMotionListener(new MouseMotionAdapter() {
-                    @Override
-                    public void mouseMoved(MouseEvent e) {
-                        gameOfLife.setValue(panelX, panelY, 1);
-                        gameOfLife.visualize();
-                    }
-                });
-                matrixGUI[x][y] = panel;
-            }
-        }
+        createMatrix();
 
         for(JPanel[] panelRow: matrixGUI) {
             for(JPanel panel: panelRow) {
-                mainPanel.add(panel);
+                matrixContainer.add(panel);
             }
         }
 
+        matrixContainer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    isRightButtonPressed = true;
+                    handlePanelHover(e.getComponent(), e.getPoint());
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                isRightButtonPressed = false;
+            }
+        });
+
+        matrixContainer.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (isRightButtonPressed) {
+                    handlePanelHover(e.getComponent(), e.getPoint());
+                }
+            }
+        });
         pack();
+    }
+
+    private void handlePanelHover(Component source, Point mousePoint) {
+        // Конвертируем координаты относительно контейнера
+        Point containerPoint = SwingUtilities.convertPoint(source, mousePoint, source.getParent());
+
+        // Находим панель под курсором
+        Component target = SwingUtilities.getDeepestComponentAt(source.getParent(), containerPoint.x, containerPoint.y);
+
+        if (target instanceof JPanel) {
+            JPanel hoveredPanel = (JPanel) target;
+            for(int x = 0; x < matrixGUI.length; x++) {
+                for(int y = 0; y < matrixGUI[0].length; y++) {
+                    if(matrixGUI[x][y].equals(hoveredPanel)) {
+                        gameOfLife.setValue(x, y, 1);
+                        gameOfLife.visualize();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void createMatrix() {
+        for(int x = 0; x < matrixGUI.length; x++) {
+            for(int y = 0; y < matrixGUI[0].length; y++) {
+                JPanel panel = new JPanel();
+                panel.setPreferredSize(new Dimension(getPreferredSize().width / matrixGUI.length, getPreferredSize().height / matrixGUI[0].length));
+                panel.setBackground(Color.BLACK);
+                matrixGUI[x][y] = panel;
+            }
+        }
     }
 
     public void visualize(AbstractCellularElement[][] matrix) {
