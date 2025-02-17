@@ -11,12 +11,15 @@ public class RendererGUI extends JFrame {
     private JPanel matrixContainer;
 
     private static boolean isRightButtonPressed = false;
+    private static boolean isLeftButtonPressed = false;
 
     private GameOfLife gameOfLife;
 
 
     private JButton stopButton = new JButton("Stop");
     private JButton startButton = new JButton("Start");
+    private JButton doTurnButton = new JButton("Do turn");
+    private JButton clearFieldButton = new JButton("Clear");
 
     public RendererGUI(GameOfLife gameOfLife) {
         this.gameOfLife = gameOfLife;
@@ -59,6 +62,28 @@ public class RendererGUI extends JFrame {
             }
         });
 
+        southPanel.add(doTurnButton);
+        doTurnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameOfLife.doMove();
+                gameOfLife.visualize();
+            }
+        });
+
+        southPanel.add(clearFieldButton);
+        clearFieldButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int x = 0; x < matrixGUI.length; x++) {
+                    for(int y = 0; y < matrixGUI[0].length; y++) {
+                        gameOfLife.setValue(x, y, 0);
+                    }
+                }
+                gameOfLife.visualize();
+            }
+        });
+
         add(southPanel, BorderLayout.SOUTH);
 
         createMatrix();
@@ -75,19 +100,23 @@ public class RendererGUI extends JFrame {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     isRightButtonPressed = true;
                     handlePanelHover(e.getComponent(), e.getPoint());
+                } else if(SwingUtilities.isLeftMouseButton(e)) {
+                    isLeftButtonPressed = true;
+                    handlePanelHover(e.getComponent(), e.getPoint());
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 isRightButtonPressed = false;
+                isLeftButtonPressed = false;
             }
         });
 
         matrixContainer.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (isRightButtonPressed) {
+                if (isRightButtonPressed || isLeftButtonPressed) {
                     handlePanelHover(e.getComponent(), e.getPoint());
                 }
             }
@@ -107,7 +136,10 @@ public class RendererGUI extends JFrame {
             for(int x = 0; x < matrixGUI.length; x++) {
                 for(int y = 0; y < matrixGUI[0].length; y++) {
                     if(matrixGUI[x][y].equals(hoveredPanel)) {
-                        gameOfLife.setValue(x, y, 1);
+                        if(isLeftButtonPressed)
+                            gameOfLife.setValue(x, y, 1);
+                        if(isRightButtonPressed)
+                            gameOfLife.setValue(x, y, 0);
                         gameOfLife.visualize();
                         return;
                     }

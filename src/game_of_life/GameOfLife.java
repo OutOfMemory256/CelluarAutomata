@@ -16,17 +16,17 @@ public class GameOfLife {
 
     public GameOfLife() {
         rendererGUI = new RendererGUI(this);
-        matrix[4][4] = 1;
-        matrix[5][4] = 1;
-        matrix[6][4] = 1;
         rendererGUI.init(WIDTH, HEIGHT);
     }
 
     public void run() throws InterruptedException {
         isGameRunning = true;
+        visualize();
         while(true) {
-            if(isGameRunning)
+            if(isGameRunning) {
                 doMove();
+                visualize();
+            }
             Thread.sleep(100);
         }
     }
@@ -38,8 +38,6 @@ public class GameOfLife {
                 matrixCopy[x][y] = matrix[x][y];
             }
         }
-
-        visualize();
 
         for(int x = 0; x < matrix.length; x++) {
             for(int y = 0; y < matrix[0].length; y++) {
