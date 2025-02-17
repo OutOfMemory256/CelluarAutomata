@@ -24,8 +24,9 @@ public class GameOfLife {
 
     public void run() throws InterruptedException {
         isGameRunning = true;
-        while(isGameRunning) {
-            doMove();
+        while(true) {
+            if(isGameRunning)
+                doMove();
             Thread.sleep(100);
         }
     }
@@ -38,18 +39,7 @@ public class GameOfLife {
             }
         }
 
-        System.out.println("done");
-
-        AbstractCellularElement[][] matrixGUI = new AbstractCellularElement[WIDTH][HEIGHT];
-        for(int x = 0; x < matrix.length; x++) {
-            for(int y = 0; y < matrix[0].length; y++) {
-                matrixGUI[x][y] = matrix[x][y] == 1 ? new AliveCell() : new DeadCell();
-            }
-        }
-
-        System.out.println("1done");
-
-        rendererGUI.visualize(matrixGUI);
+        visualize();
 
         for(int x = 0; x < matrix.length; x++) {
             for(int y = 0; y < matrix[0].length; y++) {
@@ -69,6 +59,16 @@ public class GameOfLife {
         }
 
         matrix = matrixCopy.clone();
+    }
+
+    public void visualize() {
+        AbstractCellularElement[][] matrixGUI = new AbstractCellularElement[WIDTH][HEIGHT];
+        for(int x = 0; x < matrix.length; x++) {
+            for(int y = 0; y < matrix[0].length; y++) {
+                matrixGUI[x][y] = matrix[x][y] == 1 ? new AliveCell() : new DeadCell();
+            }
+        }
+        rendererGUI.visualize(matrixGUI);
     }
 
     public class AliveCell extends AbstractCellularElement {
@@ -97,5 +97,9 @@ public class GameOfLife {
 
     public void stop() {
         isGameRunning = false;
+    }
+
+    public void start() {
+        isGameRunning = true;
     }
 }

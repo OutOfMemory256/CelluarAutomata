@@ -12,8 +12,9 @@ public class RendererGUI extends JFrame {
 
     private GameOfLife gameOfLife;
 
-    private JTextField seedField = new JTextField();
-    private JButton generateButton = new JButton("Visualize");
+
+    private JButton stopButton = new JButton("Stop");
+    private JButton startButton = new JButton("Start");
 
     public RendererGUI(GameOfLife gameOfLife) {
         this.gameOfLife = gameOfLife;
@@ -33,21 +34,26 @@ public class RendererGUI extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        generateButton.setPreferredSize(new Dimension(100, 15));
+        stopButton.setPreferredSize(new Dimension(100, 15));
 
         JPanel southPanel = new JPanel();
 
         BoxLayout boxLayout = new BoxLayout(southPanel, BoxLayout.X_AXIS);
         southPanel.setLayout(boxLayout);
 
-        southPanel.add(new JLabel("Seed: "));
-        southPanel.add(seedField);
-
-        southPanel.add(generateButton);
-        generateButton.addActionListener(new ActionListener() {
+        southPanel.add(stopButton);
+        stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameOfLife.stop();
+            }
+        });
 
+        southPanel.add(startButton);
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameOfLife.start();
             }
         });
 
@@ -63,8 +69,8 @@ public class RendererGUI extends JFrame {
                 panel.addMouseMotionListener(new MouseMotionAdapter() {
                     @Override
                     public void mouseMoved(MouseEvent e) {
-
-                            gameOfLife.setValue(panelX, panelY, 1);
+                        gameOfLife.setValue(panelX, panelY, 1);
+                        gameOfLife.visualize();
                     }
                 });
                 matrixGUI[x][y] = panel;
