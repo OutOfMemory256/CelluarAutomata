@@ -1,4 +1,4 @@
-package cellularRenderer;
+package cellularAutomataCore;
 
 public abstract class AbstractCellularAutomata {
     private final int WIDTH = 100;
@@ -7,12 +7,6 @@ public abstract class AbstractCellularAutomata {
     private volatile boolean isGameRunning;
 
     protected int[][] matrix = new int[WIDTH][HEIGHT];
-
-    public AbstractCellularAutomata() {
-        matrix[51][50] = 1;
-        matrix[52][50] = 1;
-        matrix[53][50] = 1;
-    }
 
     public void run() {
         isGameRunning = true;

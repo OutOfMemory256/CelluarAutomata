@@ -1,4 +1,4 @@
-package cellularRenderer;
+package cellularAutomataCore;
 
 import java.awt.*;
 

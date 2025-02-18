@@ -1,6 +1,7 @@
-package cellularRenderer;
+package renderer;
 
-import game_of_life.GameOfLife;
+import cellularAutomataCore.AbstractCellularElement;
+import gameOfLife.GameOfLife;
 
 import javax.swing.*;
 import java.awt.*;
