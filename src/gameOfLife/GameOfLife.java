@@ -7,12 +7,14 @@ import renderer.RendererGUI;
 import java.awt.*;
 
 public class GameOfLife extends AbstractCellularAutomata {
-    private final int WIDTH = 100;
-    private final int HEIGHT = 100;
+    private final int WIDTH;
+    private final int HEIGHT;
 
     private RendererGUI rendererGUI;
 
-    public GameOfLife() {
+    public GameOfLife(int width, int height) {
+        WIDTH = width;
+        HEIGHT = height;
         rendererGUI = new RendererGUI(this);
         rendererGUI.init(WIDTH, HEIGHT);
     }
@@ -20,9 +22,14 @@ public class GameOfLife extends AbstractCellularAutomata {
     @Override
     protected void executeRules(int x, int y, int[][] matrixCopy) {
         int total =
-                getValueFromMatrix(x - 1,y - 1) + getValueFromMatrix(x, y - 1) + getValueFromMatrix(x + 1, y - 1) +
-                        getValueFromMatrix(x - 1, y) +                        getValueFromMatrix(x + 1, y) +
-                        getValueFromMatrix(x - 1, y + 1) + getValueFromMatrix(x, y + 1) + getValueFromMatrix(x + 1, y + 1);
+                getValueFromMatrix(x - 1,y - 1) +
+                        getValueFromMatrix(x, y - 1) +
+                        getValueFromMatrix(x + 1, y - 1) +
+                        getValueFromMatrix(x - 1, y) +
+                        getValueFromMatrix(x + 1, y) +
+                        getValueFromMatrix(x - 1, y + 1) +
+                        getValueFromMatrix(x, y + 1) +
+                        getValueFromMatrix(x + 1, y + 1);
 
         if (total == 3) {
             matrixCopy[x][y] = 1;
