@@ -10,7 +10,7 @@ public class GameOfLife extends AbstractCellularAutomata {
     private final int WIDTH;
     private final int HEIGHT;
 
-    private RendererGUI rendererGUI;
+    private final RendererGUI rendererGUI;
 
     public GameOfLife(int width, int height) {
         WIDTH = width;
@@ -30,7 +30,6 @@ public class GameOfLife extends AbstractCellularAutomata {
                         getValueFromMatrix(x - 1, y + 1) +
                         getValueFromMatrix(x, y + 1) +
                         getValueFromMatrix(x + 1, y + 1);
-
         if (total == 3) {
             matrixCopy[x][y] = 1;
         } else if (total < 2 || total > 3){
@@ -48,13 +47,13 @@ public class GameOfLife extends AbstractCellularAutomata {
         rendererGUI.visualize(matrixGUI);
     }
 
-    public class AliveCell extends AbstractCellularElement {
+    public static class AliveCell extends AbstractCellularElement {
         private AliveCell() {
             super(Color.WHITE);
         }
     }
 
-    public class DeadCell extends AbstractCellularElement {
+    public static class DeadCell extends AbstractCellularElement {
         public DeadCell() {
             super(Color.BLACK);
         }

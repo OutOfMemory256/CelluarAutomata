@@ -9,18 +9,18 @@ public abstract class AbstractCellularAutomata {
     protected int[][] matrix = new int[WIDTH][HEIGHT];
 
     public void run() {
-        isGameRunning = true;
         visualize();
+
+        isGameRunning = true;
         while(true) {
             if(isGameRunning) {
                 doMove();
                 visualize();
             }
             try {
+                //noinspection BusyWait
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (InterruptedException _) {}
         }
     }
 
@@ -31,7 +31,7 @@ public abstract class AbstractCellularAutomata {
             for(int y = 0; y < matrix[0].length; y++) {
                 try {
                     executeRules(x, y, matrixCopy);
-                } catch (Exception e) {}
+                } catch (Exception _) {}
             }
         }
         matrix = cloneMatrix(matrixCopy);
@@ -42,9 +42,7 @@ public abstract class AbstractCellularAutomata {
     protected int[][] cloneMatrix(int[][] matrix) {
         int[][] matrixCopy = new int[matrix.length][matrix[0].length];
         for(int x = 0; x < matrix.length; x++) {
-            for(int y = 0; y < matrix[0].length; y++) {
-                matrixCopy[x][y] = matrix[x][y];
-            }
+            System.arraycopy(matrix[x], 0, matrixCopy[x], 0, matrix[0].length);
         }
         return matrixCopy;
     }

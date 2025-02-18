@@ -1,7 +1,7 @@
 package renderer;
 
+import cellularAutomataCore.AbstractCellularAutomata;
 import cellularAutomataCore.AbstractCellularElement;
-import gameOfLife.GameOfLife;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,15 +14,15 @@ public class RendererGUI extends JFrame {
     private static boolean isRightButtonPressed = false;
     private static boolean isLeftButtonPressed = false;
 
-    private GameOfLife gameOfLife;
+    private final AbstractCellularAutomata cellularAutomata;
 
-    private JButton stopButton = new JButton("Stop");
-    private JButton startButton = new JButton("Start");
-    private JButton doTurnButton = new JButton("Do turn");
-    private JButton clearFieldButton = new JButton("Clear");
+    private final JButton stopButton = new JButton("Stop");
+    private final JButton startButton = new JButton("Start");
+    private final JButton doTurnButton = new JButton("Do turn");
+    private final JButton clearFieldButton = new JButton("Clear");
 
-    public RendererGUI(GameOfLife gameOfLife) {
-        this.gameOfLife = gameOfLife;
+    public RendererGUI(AbstractCellularAutomata cellularAutomata) {
+        this.cellularAutomata = cellularAutomata;
 
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -61,7 +61,7 @@ public class RendererGUI extends JFrame {
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameOfLife.stop();
+                cellularAutomata.stop();
             }
         });
 
@@ -69,7 +69,7 @@ public class RendererGUI extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameOfLife.start();
+                cellularAutomata.start();
             }
         });
 
@@ -77,8 +77,8 @@ public class RendererGUI extends JFrame {
         doTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameOfLife.doMove();
-                gameOfLife.visualize();
+                cellularAutomata.doMove();
+                cellularAutomata.visualize();
             }
         });
 
@@ -88,10 +88,10 @@ public class RendererGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 for (int x = 0; x < matrixGUI.length; x++) {
                     for (int y = 0; y < matrixGUI[0].length; y++) {
-                        gameOfLife.setValue(x, y, 0);
+                        cellularAutomata.setValue(x, y, 0);
                     }
                 }
-                gameOfLife.visualize();
+                cellularAutomata.visualize();
             }
         });
     }
@@ -138,10 +138,10 @@ public class RendererGUI extends JFrame {
                 for(int y = 0; y < matrixGUI[0].length; y++) {
                     if(matrixGUI[x][y].equals(hoveredPanel)) {
                         if(isLeftButtonPressed)
-                            gameOfLife.setValue(x, y, 1);
+                            cellularAutomata.setValue(x, y, 1);
                         if(isRightButtonPressed)
-                            gameOfLife.setValue(x, y, 0);
-                        gameOfLife.visualize();
+                            cellularAutomata.setValue(x, y, 0);
+                        cellularAutomata.visualize();
                         return;
                     }
                 }
