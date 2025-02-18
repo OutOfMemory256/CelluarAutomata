@@ -1,17 +1,15 @@
 package game_of_life;
 
+import cellularRenderer.AbstractCellularAutomata;
 import cellularRenderer.AbstractCellularElement;
 import cellularRenderer.RendererGUI;
 
 import java.awt.*;
 
-public class GameOfLife {
+public class GameOfLife extends AbstractCellularAutomata {
     private final int WIDTH = 100;
     private final int HEIGHT = 100;
 
-    private volatile boolean isGameRunning;
-
-    private int[][] matrix = new int[WIDTH][HEIGHT];
     private RendererGUI rendererGUI;
 
     public GameOfLife() {
@@ -19,44 +17,18 @@ public class GameOfLife {
         rendererGUI.init(WIDTH, HEIGHT);
     }
 
-    public void run() throws InterruptedException {
-        isGameRunning = true;
-        visualize();
-        while(true) {
-            if(isGameRunning) {
-                doMove();
-                visualize();
-            }
-            Thread.sleep(100);
+    @Override
+    protected void executeRules(int x, int y, int[][] matrixCopy) {
+        int total =
+                getValueFromMatrix(x - 1,y - 1) + getValueFromMatrix(x, y - 1) + getValueFromMatrix(x + 1, y - 1) +
+                        getValueFromMatrix(x - 1, y) +                        getValueFromMatrix(x + 1, y) +
+                        getValueFromMatrix(x - 1, y + 1) + getValueFromMatrix(x, y + 1) + getValueFromMatrix(x + 1, y + 1);
+
+        if (total == 3) {
+            matrixCopy[x][y] = 1;
+        } else if (total < 2 || total > 3){
+            matrixCopy[x][y] = 0;
         }
-    }
-
-    public void doMove() {
-        int[][] matrixCopy = new int[matrix.length][matrix[0].length];
-        for(int x = 0; x < matrix.length; x++) {
-            for(int y = 0; y < matrix[0].length; y++) {
-                matrixCopy[x][y] = matrix[x][y];
-            }
-        }
-
-        for(int x = 0; x < matrix.length; x++) {
-            for(int y = 0; y < matrix[0].length; y++) {
-
-                    int total =
-                            getValueFromMatrix(x - 1,y - 1) + getValueFromMatrix(x, y - 1) + getValueFromMatrix(x + 1, y - 1) +
-                                    getValueFromMatrix(x - 1, y) +                        getValueFromMatrix(x + 1, y) +
-                                    getValueFromMatrix(x - 1, y + 1) + getValueFromMatrix(x, y + 1) + getValueFromMatrix(x + 1, y + 1);
-
-                if (total == 3) {
-                        matrixCopy[x][y] = 1;
-                    } else if (total < 2 || total > 3){
-                        matrixCopy[x][y] = 0;
-                    }
-
-            }
-        }
-
-        matrix = matrixCopy.clone();
     }
 
     public void visualize() {
@@ -79,25 +51,5 @@ public class GameOfLife {
         public DeadCell() {
             super(Color.BLACK);
         }
-    }
-
-    private int getValueFromMatrix(int x, int y) {
-        try {
-            return matrix[x][y];
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    public void setValue(int x, int y, int value) {
-        matrix[x][y] = value;
-    }
-
-    public void stop() {
-        isGameRunning = false;
-    }
-
-    public void start() {
-        isGameRunning = true;
     }
 }
