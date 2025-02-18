@@ -38,10 +38,10 @@ public class GameOfLife extends AbstractCellularAutomata {
     }
 
     public void visualize() {
-        AbstractCellularElement[][] matrixGUI = new AbstractCellularElement[WIDTH][HEIGHT];
+        Color[][] matrixGUI = new Color[WIDTH][HEIGHT];
         for(int x = 0; x < matrix.length; x++) {
             for(int y = 0; y < matrix[0].length; y++) {
-                matrixGUI[x][y] = matrix[x][y] == 1 ? new AliveCell() : new DeadCell();
+                matrixGUI[x][y] = matrix[x][y] == 1 ? Color.WHITE :Color.BLACK;
             }
         }
         rendererGUI.visualize(matrixGUI);

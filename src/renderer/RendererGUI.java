@@ -168,10 +168,10 @@ public class RendererGUI extends JFrame {
         }
     }
 
-    public void visualize(AbstractCellularElement[][] matrix) {
+    public void visualize(Color[][] matrix) {
         for(int i = 0; i < matrix.length; i++) {
             for(int j = 0; j < matrix[0].length; j++) {
-                matrixGUI[i][j].setBackground(matrix[i][j].getColor());
+                matrixGUI[i][j].setBackground(matrix[i][j]);
             }
         }
         repaint();
