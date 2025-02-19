@@ -1,30 +1,40 @@
 package cellularAutomataCore;
 
+import renderer.RendererGUI;
+
 import java.awt.*;
 
 public abstract class AbstractCellularAutomata {
     private final int WIDTH;
     private final int HEIGHT;
 
-    private volatile boolean isGameRunning;
+    protected volatile boolean isGameRunning;
 
     protected int[][] matrix;
 
     protected final Color[] palette;
 
+    private final RendererGUI rendererGUI;
+
     protected AbstractCellularAutomata(int width, int height, Color[] palette) {
         this.palette = palette;
+
         WIDTH = width;
         HEIGHT = height;
+
         matrix =  new int[WIDTH][HEIGHT];
+        rendererGUI = new RendererGUI(this);
+        rendererGUI.init(width, height);
+
+        isGameRunning = true;
     }
 
     public void run() {
         visualize();
 
-        isGameRunning = true;
         while(true) {
             if(isGameRunning) {
+                isGameRunning = !needToStop();
                 doMove();
                 visualize();
             }
@@ -58,7 +68,9 @@ public abstract class AbstractCellularAutomata {
         return matrixCopy;
     }
 
-    public abstract void visualize();
+    public void visualize() {
+        rendererGUI.visualize(matrix, palette);
+    }
 
     protected int getValueFromMatrix(int x, int y) {
         try {
@@ -66,6 +78,10 @@ public abstract class AbstractCellularAutomata {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    protected boolean needToStop() {
+        return false;
     }
 
     public void setValue(int x, int y, int value) {

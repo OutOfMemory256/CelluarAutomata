@@ -4,10 +4,12 @@ import cellularAutomataCore.AbstractCellularAutomata;
 
 import java.awt.*;
 
-public class GameOfLife extends AbstractCellularAutomata {
+public class CaveGenerator extends AbstractCellularAutomata {
+    private int timer = 10;
 
-    public GameOfLife(int width, int height) {
+    public CaveGenerator(int width, int height) {
         super(width, height, new Color[]{Color.BLACK, Color.WHITE});
+        isGameRunning = false;
     }
 
     @Override
@@ -21,10 +23,13 @@ public class GameOfLife extends AbstractCellularAutomata {
                         getValueFromMatrix(x - 1, y + 1) +
                         getValueFromMatrix(x, y + 1) +
                         getValueFromMatrix(x + 1, y + 1);
-        if (total == 3) {
+        if (total >= 5) {
             matrixCopy[x][y] = 1;
-        } else if (total < 2 || total > 3){
-            matrixCopy[x][y] = 0;
         }
+    }
+
+    @Override
+    protected boolean needToStop() {
+        return timer-- > 0;
     }
 }

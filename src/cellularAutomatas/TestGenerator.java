@@ -1,17 +1,14 @@
 package cellularAutomatas;
 
 import cellularAutomataCore.AbstractCellularAutomata;
-import renderer.RendererGUI;
 
 import java.awt.*;
 
-public class TestAutomata extends AbstractCellularAutomata {
-    private final RendererGUI rendererGUI;
+public class TestGenerator extends AbstractCellularAutomata {
+    private int timer = 100;
 
-    public TestAutomata(int width, int height) {
+    public TestGenerator(int width, int height) {
         super(width, height, new Color[]{Color.BLACK, Color.WHITE});
-        rendererGUI = new RendererGUI(this);
-        rendererGUI.init(width, height);
     }
 
     @Override
@@ -25,12 +22,15 @@ public class TestAutomata extends AbstractCellularAutomata {
                         getValueFromMatrix(x - 1, y + 1) +
                         getValueFromMatrix(x, y + 1) +
                         getValueFromMatrix(x + 1, y + 1);
-        if (total >= 5) {
+        if (total == 3 || total >= 6) {
             matrixCopy[x][y] = 1;
+        } else if (total != 4){
+            matrixCopy[x][y] = 0;
         }
     }
 
-    public void visualize() {
-        rendererGUI.visualize(matrix, palette);
+    @Override
+    protected boolean needToStop() {
+        return timer-- < 0;
     }
 }
