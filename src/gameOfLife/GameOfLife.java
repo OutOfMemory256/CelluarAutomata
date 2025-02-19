@@ -1,7 +1,6 @@
 package gameOfLife;
 
 import cellularAutomataCore.AbstractCellularAutomata;
-import cellularAutomataCore.AbstractCellularElement;
 import renderer.RendererGUI;
 
 import java.awt.*;
@@ -13,6 +12,7 @@ public class GameOfLife extends AbstractCellularAutomata {
     private final RendererGUI rendererGUI;
 
     public GameOfLife(int width, int height) {
+        super(new Color[]{Color.BLACK, Color.WHITE});
         WIDTH = width;
         HEIGHT = height;
         rendererGUI = new RendererGUI(this);
@@ -38,24 +38,6 @@ public class GameOfLife extends AbstractCellularAutomata {
     }
 
     public void visualize() {
-        Color[][] matrixGUI = new Color[WIDTH][HEIGHT];
-        for(int x = 0; x < matrix.length; x++) {
-            for(int y = 0; y < matrix[0].length; y++) {
-                matrixGUI[x][y] = matrix[x][y] == 1 ? Color.WHITE :Color.BLACK;
-            }
-        }
-        rendererGUI.visualize(matrixGUI);
-    }
-
-    public static class AliveCell extends AbstractCellularElement {
-        private AliveCell() {
-            super(Color.WHITE);
-        }
-    }
-
-    public static class DeadCell extends AbstractCellularElement {
-        public DeadCell() {
-            super(Color.BLACK);
-        }
+        rendererGUI.visualize(matrix, palette);
     }
 }

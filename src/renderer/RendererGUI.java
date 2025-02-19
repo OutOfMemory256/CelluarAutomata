@@ -1,7 +1,6 @@
 package renderer;
 
 import cellularAutomataCore.AbstractCellularAutomata;
-import cellularAutomataCore.AbstractCellularElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,10 +167,10 @@ public class RendererGUI extends JFrame {
         }
     }
 
-    public void visualize(Color[][] matrix) {
-        for(int i = 0; i < matrix.length; i++) {
-            for(int j = 0; j < matrix[0].length; j++) {
-                matrixGUI[i][j].setBackground(matrix[i][j]);
+    public void visualize(int[][] matrix, Color[] palette) {
+        for(int x = 0; x < matrix.length; x++) {
+            for(int y = 0; y < matrix[0].length; y++) {
+                matrixGUI[x][y].setBackground(palette[matrix[x][y]]);
             }
         }
         repaint();

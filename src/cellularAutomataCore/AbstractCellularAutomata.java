@@ -1,5 +1,7 @@
 package cellularAutomataCore;
 
+import java.awt.*;
+
 public abstract class AbstractCellularAutomata {
     private final int WIDTH = 100;
     private final int HEIGHT = 100;
@@ -7,6 +9,12 @@ public abstract class AbstractCellularAutomata {
     private volatile boolean isGameRunning;
 
     protected int[][] matrix = new int[WIDTH][HEIGHT];
+
+    protected final Color[] palette;
+
+    protected AbstractCellularAutomata(Color[] palette) {
+        this.palette = palette;
+    }
 
     public void run() {
         visualize();
