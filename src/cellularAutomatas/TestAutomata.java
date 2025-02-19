@@ -1,22 +1,17 @@
-package gameOfLife;
+package cellularAutomatas;
 
 import cellularAutomataCore.AbstractCellularAutomata;
 import renderer.RendererGUI;
 
 import java.awt.*;
 
-public class GameOfLife extends AbstractCellularAutomata {
-    private final int WIDTH;
-    private final int HEIGHT;
-
+public class TestAutomata extends AbstractCellularAutomata {
     private final RendererGUI rendererGUI;
 
-    public GameOfLife(int width, int height) {
-        super(new Color[]{Color.BLACK, Color.WHITE});
-        WIDTH = width;
-        HEIGHT = height;
+    public TestAutomata(int width, int height) {
+        super(width, height, new Color[]{Color.BLACK, Color.WHITE});
         rendererGUI = new RendererGUI(this);
-        rendererGUI.init(WIDTH, HEIGHT);
+        rendererGUI.init(width, height);
     }
 
     @Override
@@ -30,10 +25,8 @@ public class GameOfLife extends AbstractCellularAutomata {
                         getValueFromMatrix(x - 1, y + 1) +
                         getValueFromMatrix(x, y + 1) +
                         getValueFromMatrix(x + 1, y + 1);
-        if (total == 3) {
+        if (total >= 5) {
             matrixCopy[x][y] = 1;
-        } else if (total < 2 || total > 3){
-            matrixCopy[x][y] = 0;
         }
     }
 

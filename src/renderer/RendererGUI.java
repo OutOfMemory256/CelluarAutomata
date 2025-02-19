@@ -5,6 +5,7 @@ import cellularAutomataCore.AbstractCellularAutomata;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 public class RendererGUI extends JFrame {
     private JPanel[][] matrixGUI;
@@ -19,6 +20,7 @@ public class RendererGUI extends JFrame {
     private final JButton startButton = new JButton("Start");
     private final JButton doTurnButton = new JButton("Do turn");
     private final JButton clearFieldButton = new JButton("Clear");
+    private final JButton generateNoiseButton = new JButton("Generate noise");
 
     public RendererGUI(AbstractCellularAutomata cellularAutomata) {
         this.cellularAutomata = cellularAutomata;
@@ -43,6 +45,7 @@ public class RendererGUI extends JFrame {
         southPanel.add(startButton);
         southPanel.add(doTurnButton);
         southPanel.add(clearFieldButton);
+        southPanel.add(generateNoiseButton);
         add(southPanel, BorderLayout.SOUTH);
 
         matrixGUI = new JPanel[width][height];
@@ -88,6 +91,23 @@ public class RendererGUI extends JFrame {
                 for (int x = 0; x < matrixGUI.length; x++) {
                     for (int y = 0; y < matrixGUI[0].length; y++) {
                         cellularAutomata.setValue(x, y, 0);
+                    }
+                }
+                cellularAutomata.visualize();
+            }
+        });
+
+        generateNoiseButton.setPreferredSize(new Dimension(150, 20));
+        generateNoiseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Random random = new Random();
+                for (int x = 0; x < matrixGUI.length; x++) {
+                    for (int y = 0; y < matrixGUI[0].length; y++) {
+                        if(random.nextInt(0, 3) == 1)
+                            cellularAutomata.setValue(x, y, 1);
+                        else
+                            cellularAutomata.setValue(x, y, 0);
                     }
                 }
                 cellularAutomata.visualize();

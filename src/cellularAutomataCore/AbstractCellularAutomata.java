@@ -3,17 +3,20 @@ package cellularAutomataCore;
 import java.awt.*;
 
 public abstract class AbstractCellularAutomata {
-    private final int WIDTH = 100;
-    private final int HEIGHT = 100;
+    private final int WIDTH;
+    private final int HEIGHT;
 
     private volatile boolean isGameRunning;
 
-    protected int[][] matrix = new int[WIDTH][HEIGHT];
+    protected int[][] matrix;
 
     protected final Color[] palette;
 
-    protected AbstractCellularAutomata(Color[] palette) {
+    protected AbstractCellularAutomata(int width, int height, Color[] palette) {
         this.palette = palette;
+        WIDTH = width;
+        HEIGHT = height;
+        matrix =  new int[WIDTH][HEIGHT];
     }
 
     public void run() {
