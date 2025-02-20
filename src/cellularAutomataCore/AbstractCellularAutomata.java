@@ -10,7 +10,7 @@ public abstract class AbstractCellularAutomata {
 
     protected volatile boolean isGameRunning;
 
-    protected int[][] matrix;
+    private int[][] matrix;
 
     protected final Color[] palette;
 

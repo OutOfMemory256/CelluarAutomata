@@ -1,6 +1,4 @@
-import cellularAutomatas.CaveGenerator;
-import cellularAutomatas.GameOfLife;
-import cellularAutomatas.TestGenerator;
+import cellularAutomatas.Mycelium;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -15,12 +13,12 @@ public class Main {
         new Thread() {
             @Override
             public void run() {
-                //CaveGenerator automata = new CaveGenerator(100, 100);
-                //automata.run();
+                Mycelium grassIncreasing = new Mycelium(100, 100);
+                grassIncreasing.run();
             }
         }.start();
 
-        TestGenerator generator = new TestGenerator(100, 100);
-        generator.run();
+        //TestGenerator generator = new TestGenerator(100, 100);
+        //generator.run();
     }
 }
